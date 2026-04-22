@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🇭🇰 Hong Kong Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <h1>🇭🇰 Hong Kong Dashboard</h1>
+      <div class="header-actions">
+        <span id="global-status" class="status-badge loading">Loading…</span>
+        <button id="btn-refresh" class="btn-refresh" title="Refresh all data">⟳ Refresh</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ── Section 1: Weather ─────────────────────────────────────────────── -->
+    <section class="card" id="section-weather">
+      <div class="card-header">
+        <h2>🌤️ HK Weather</h2>
+        <span class="updated-at" id="weather-updated"></span>
+      </div>
+
+      <div id="weather-loading" class="skeleton-wrap">
+        <div class="skeleton"></div>
+        <div class="skeleton short"></div>
+        <div class="skeleton"></div>
+      </div>
+
+      <div id="weather-error" class="error-box" hidden></div>
+
+      <div id="weather-content" hidden>
+        <!-- Current conditions -->
+        <div class="weather-current">
+          <div class="weather-stat-grid">
+            <div class="weather-stat">
+              <span class="stat-icon">🌡️</span>
+              <span class="stat-label">Temperature</span>
+              <span class="stat-value" id="w-temp">—</span>
+            </div>
+            <div class="weather-stat">
+              <span class="stat-icon">💧</span>
+              <span class="stat-label">Humidity</span>
+              <span class="stat-value" id="w-humidity">—</span>
+            </div>
+            <div class="weather-stat">
+              <span class="stat-icon">🌧️</span>
+              <span class="stat-label">Rainfall</span>
+              <span class="stat-value" id="w-rainfall">—</span>
+            </div>
+          </div>
+          <p class="weather-description" id="w-description"></p>
+          <div id="w-warnings" class="warnings-list"></div>
+        </div>
+
+        <!-- 9-day forecast -->
+        <h3 class="forecast-title">9-Day Forecast</h3>
+        <div class="forecast-scroll">
+          <div id="w-forecast" class="forecast-strip"></div>
+        </div>
+
+        <div class="source-line">
+          Source: <a href="https://www.hko.gov.hk" target="_blank" rel="noopener">Hong Kong Observatory</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Section 2: News ────────────────────────────────────────────────── -->
+    <section class="card" id="section-news">
+      <div class="card-header">
+        <h2>📰 HK Latest News</h2>
+        <span class="updated-at" id="news-updated"></span>
+      </div>
+
+      <div id="news-loading" class="skeleton-wrap">
+        <div class="skeleton"></div>
+        <div class="skeleton short"></div>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+      </div>
+
+      <div id="news-error" class="error-box" hidden></div>
+
+      <div id="news-content" hidden>
+        <div class="news-tabs">
+          <button class="tab active" data-tab="general">🗞️ Top Stories</button>
+          <button class="tab" data-tab="finance">💹 Finance</button>
+          <button class="tab" data-tab="realestate">🏠 Real Estate</button>
+        </div>
+
+        <div id="tab-general" class="tab-panel active">
+          <ul class="news-list" id="news-general"></ul>
+        </div>
+        <div id="tab-finance" class="tab-panel">
+          <ul class="news-list" id="news-finance"></ul>
+        </div>
+        <div id="tab-realestate" class="tab-panel">
+          <ul class="news-list" id="news-realestate"></ul>
+        </div>
+
+        <div class="source-line" id="news-sources-line"></div>
+      </div>
+    </section>
+
+    <!-- ── Section 3: Deals ───────────────────────────────────────────────── -->
+    <section class="card" id="section-deals">
+      <div class="card-header">
+        <h2>🛍️ Best Gadget Deals</h2>
+        <span class="updated-at" id="deals-updated"></span>
+      </div>
+
+      <div id="deals-loading" class="skeleton-wrap">
+        <div class="skeleton"></div>
+        <div class="skeleton short"></div>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+      </div>
+
+      <div id="deals-error" class="error-box" hidden></div>
+
+      <div id="deals-content" hidden>
+        <div class="news-tabs">
+          <button class="tab active" data-tab="international">🌐 International</button>
+          <button class="tab" data-tab="hklocal">🇭🇰 HK Local</button>
+        </div>
+
+        <div id="tab-international" class="tab-panel active">
+          <div class="deals-grid" id="deals-international"></div>
+        </div>
+        <div id="tab-hklocal" class="tab-panel">
+          <div class="deals-grid" id="deals-hklocal"></div>
+        </div>
+
+        <div class="source-line" id="deals-sources-line"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Data refreshes every hour automatically. ·
+      <a href="/api/health" target="_blank" rel="noopener">API Health</a>
+    </p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
