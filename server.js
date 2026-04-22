@@ -19,6 +19,25 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// ─── Simple in-process rate limiter for /api/refresh ─────────────────────────
+const refreshRateLimit = (() => {
+  const MIN_INTERVAL_MS = 60 * 1000; // at most once per minute
+  let lastRefreshAt = 0;
+  return (req, res, next) => {
+    const now = Date.now();
+    if (now - lastRefreshAt < MIN_INTERVAL_MS) {
+      const retryAfterSec = Math.ceil((MIN_INTERVAL_MS - (now - lastRefreshAt)) / 1000);
+      res.setHeader('Retry-After', String(retryAfterSec));
+      return res.status(429).json({
+        ok: false,
+        error: `Too many refresh requests. Retry after ${retryAfterSec}s.`,
+      });
+    }
+    lastRefreshAt = now;
+    next();
+  };
+})();
+
 // ─── Helper ──────────────────────────────────────────────────────────────────
 function envelope(cacheEntry) {
   if (!cacheEntry) {
@@ -77,7 +96,7 @@ app.get('/api/deals', (_req, res) => {
 });
 
 /** Manual refresh */
-app.post('/api/refresh', async (_req, res) => {
+app.post('/api/refresh', refreshRateLimit, async (_req, res) => {
   try {
     // Kick off async; don't wait for completion — return 202 immediately
     refreshAll().catch((err) => console.error('[api] Refresh error:', err));

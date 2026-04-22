@@ -63,6 +63,9 @@ function startScheduler() {
   } else if (INTERVAL_MS >= 60000) {
     cronExpr = '* * * * *'; // every minute (dev)
   } else {
+    console.warn(
+      `[scheduler] REFRESH_INTERVAL_MS=${INTERVAL_MS} is below 60 s — cron minimum is 1 minute. Defaulting to every-minute refresh.`
+    );
     cronExpr = '* * * * *';
   }
 

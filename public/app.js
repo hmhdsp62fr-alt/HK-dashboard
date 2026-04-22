@@ -336,12 +336,14 @@ function escapeAttr(str) {
 /* ── Auto-refresh (hourly) ────────────────────────────────────────────────── */
 
 function scheduleAutoRefresh() {
-  // Reload data from backend every hour (backend also refreshes internally)
+  // Reload data from backend every hour (backend also refreshes internally).
+  // Wait for all fetches to complete before scheduling the next cycle to avoid overlaps.
   const HOUR_MS = 60 * 60 * 1000;
-  setTimeout(async function tick() {
+  async function tick() {
     await Promise.allSettled([loadWeather(), loadNews(), loadDeals()]);
     setTimeout(tick, HOUR_MS);
-  }, HOUR_MS);
+  }
+  setTimeout(tick, HOUR_MS);
 }
 
 /* ── Init ─────────────────────────────────────────────────────────────────── */

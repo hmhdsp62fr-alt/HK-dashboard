@@ -85,12 +85,6 @@ const SOURCES = [
     label: 'i-Cable News',
     category: 'general',
   },
-  // Real-estate / property: RTHK property section
-  {
-    url: 'https://rthk9.rthk.hk/rthk/news/rss/e_expressnews_all.xml',
-    label: 'RTHK Property',
-    category: 'real-estate',
-  },
 ];
 
 async function fetchNews() {
